@@ -1,0 +1,1238 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulaire — Demande de CNI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f6f4ec;
+        --ink: #16332c;
+        --ink-soft: #3e5850;
+        --primary: #1f6e52;
+        --primary-dark: #144a38;
+        --gold: #be9a44;
+        --card: #ffffff;
+        --border: rgba(22, 51, 44, 0.14);
+        --danger: #c1432e;
+        --muted: #7c8983;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body {
+        padding: 0 0 60px;
+      }
+
+      .flag-strip {
+        height: 5px;
+        width: 100%;
+        background: linear-gradient(
+          90deg,
+          #1f6e52 0 33%,
+          #be9a44 33% 66%,
+          #c1432e 66% 100%
+        );
+      }
+
+      .wrap {
+        width: min(94vw, 460px);
+        margin: 0 auto;
+      }
+
+      /* ===== Progress ===== */
+      .progress-bar-outer {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: var(--bg);
+        padding: 14px 0 8px;
+      }
+
+      .progress-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-size: 11.5px;
+        color: var(--muted);
+        margin-bottom: 6px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+      }
+
+      .progress-meta span.pct {
+        color: var(--primary-dark);
+        font-weight: 800;
+      }
+
+      .progress-track {
+        height: 6px;
+        border-radius: 4px;
+        background: rgba(22, 51, 44, 0.09);
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--primary), var(--gold));
+        border-radius: 4px;
+        transition: width 0.35s ease;
+      }
+
+      /* ===== Header ===== */
+      header.page-head {
+        text-align: center;
+        margin: 10px 0 22px;
+      }
+
+      header.page-head .eyebrow {
+        font-size: 11.5px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--gold);
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+
+      header.page-head h1 {
+        font-family: "Fraunces", serif;
+        font-weight: 600;
+        font-size: 27px;
+        color: var(--ink);
+        margin: 0 0 8px;
+        line-height: 1.15;
+      }
+
+      header.page-head p {
+        font-size: 13.5px;
+        color: var(--ink-soft);
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      /* ===== Section cards ===== */
+      section.card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 22px 18px 8px;
+        margin-bottom: 20px;
+        box-shadow:
+          0 2px 4px rgba(22, 51, 44, 0.04),
+          0 12px 28px rgba(22, 51, 44, 0.06);
+      }
+
+      .section-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 4px;
+      }
+
+      .section-head .icon {
+        font-size: 20px;
+        line-height: 1;
+      }
+
+      .section-head h2 {
+        font-family: "Fraunces", serif;
+        font-weight: 600;
+        font-size: 18px;
+        color: var(--ink);
+        margin: 0;
+      }
+
+      .section-rule {
+        height: 1px;
+        background: linear-gradient(90deg, var(--gold), transparent);
+        margin: 10px 0 18px;
+        opacity: 0.5;
+      }
+
+      /* ===== Fields ===== */
+      .field {
+        margin-bottom: 17px;
+      }
+
+      .field label {
+        display: block;
+        font-size: 11.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--ink-soft);
+        margin-bottom: 6px;
+      }
+
+      .field label .req {
+        color: var(--danger);
+        margin-left: 2px;
+      }
+
+      .field label .opt {
+        text-transform: none;
+        font-weight: 500;
+        letter-spacing: 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        padding: 12px 13px;
+        font-size: 15.5px;
+        font-family: "Inter", sans-serif;
+        font-weight: 500;
+        border: 1.5px solid var(--border);
+        border-radius: 11px;
+        background: #fcfbf7;
+        color: var(--ink);
+        transition:
+          border-color 0.15s ease,
+          box-shadow 0.15s ease,
+          background 0.15s ease;
+      }
+
+      .field select {
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%233E5850' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        padding-right: 36px;
+      }
+
+      .field textarea {
+        resize: vertical;
+        min-height: 66px;
+      }
+
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(31, 110, 82, 0.13);
+      }
+
+      .field .error-msg {
+        display: none;
+        font-size: 11.5px;
+        color: var(--danger);
+        margin-top: 5px;
+        font-weight: 600;
+      }
+
+      .field.has-error input,
+      .field.has-error select,
+      .field.has-error textarea {
+        border-color: var(--danger);
+        background: #fdf3f1;
+        box-shadow: 0 0 0 4px rgba(193, 67, 46, 0.1);
+      }
+
+      .field.has-error .error-msg {
+        display: block;
+      }
+
+      @keyframes shake {
+        10%,
+        90% {
+          transform: translateX(-1px);
+        }
+        20%,
+        80% {
+          transform: translateX(2px);
+        }
+        30%,
+        50%,
+        70% {
+          transform: translateX(-4px);
+        }
+        40%,
+        60% {
+          transform: translateX(4px);
+        }
+      }
+      .shake {
+        animation: shake 0.45s ease;
+      }
+
+      #minor-section {
+        display: none;
+        padding-top: 4px;
+      }
+
+      .divider-note {
+        font-size: 12.5px;
+        color: var(--muted);
+        margin: 0 0 16px;
+        line-height: 1.5;
+        padding: 10px 12px;
+        background: rgba(190, 154, 68, 0.1);
+        border-radius: 9px;
+        border-left: 3px solid var(--gold);
+      }
+
+      /* ===== Send button ===== */
+      .send-wrap {
+        text-align: center;
+        padding: 4px 4px 4px;
+      }
+
+      .send-wrap p.hint {
+        font-size: 12.5px;
+        color: var(--ink-soft);
+        margin: 0 0 16px;
+        line-height: 1.5;
+      }
+
+      .send-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background: linear-gradient(
+          180deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        color: #fff;
+        font-family: "Fraunces", serif;
+        font-weight: 600;
+        font-size: 18.5px;
+        letter-spacing: 0.3px;
+        padding: 17px 12px;
+        border: none;
+        border-radius: 14px;
+        cursor: pointer;
+        box-shadow:
+          0 4px 0 #0d3327,
+          0 14px 26px rgba(20, 74, 56, 0.3);
+        animation: breathe 2.6s ease-in-out infinite;
+      }
+
+      .send-btn svg {
+        width: 21px;
+        height: 21px;
+        flex-shrink: 0;
+      }
+
+      .send-btn:active {
+        transform: translateY(3px);
+        box-shadow:
+          0 1px 0 #0d3327,
+          0 6px 14px rgba(20, 74, 56, 0.25);
+      }
+
+      .send-btn:focus-visible {
+        outline: 3px solid var(--gold);
+        outline-offset: 3px;
+      }
+
+      @keyframes breathe {
+        0%,
+        100% {
+          box-shadow:
+            0 4px 0 #0d3327,
+            0 14px 26px rgba(20, 74, 56, 0.3);
+        }
+        50% {
+          box-shadow:
+            0 4px 0 #0d3327,
+            0 16px 34px rgba(20, 74, 56, 0.5),
+            0 0 0 7px rgba(31, 110, 82, 0.12);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .send-btn {
+          animation: none;
+        }
+        .shake {
+          animation: none;
+        }
+        .progress-fill {
+          transition: none;
+        }
+      }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 22px;
+        transform: translate(-50%, 20px);
+        background: var(--ink);
+        color: #fbf9f2;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 12px 18px;
+        border-radius: 11px;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.25s ease,
+          transform 0.25s ease;
+        max-width: 88vw;
+        text-align: center;
+        z-index: 30;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+
+      .autosave-note {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        justify-content: center;
+        font-size: 11.5px;
+        color: var(--primary-dark);
+        margin: 14px 0 4px;
+        font-weight: 600;
+      }
+
+      footer.small {
+        text-align: center;
+        font-size: 10.5px;
+        color: var(--muted);
+        margin-top: 10px;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flag-strip"></div>
+
+    <div class="wrap">
+      <div class="progress-bar-outer">
+        <div class="progress-meta">
+          <span>Progression du formulaire</span>
+          <span class="pct" id="progress-pct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <header class="page-head">
+        <p class="eyebrow">République du Cameroun</p>
+        <h1>Formulaire de<br />demande de CNI</h1>
+        <p>
+          Merci de remplir chaque information avec précision. Les champs marqués
+          <b style="color: var(--danger)">*</b> sont obligatoires.
+        </p>
+      </header>
+
+      <form id="cni-form" novalidate>
+        <!-- ================= DONNÉES PERSONNELLES ================= -->
+        <section class="card">
+          <div class="section-head">
+            <span class="icon">🪪</span>
+            <h2>Données personnelles</h2>
+          </div>
+          <div class="section-rule"></div>
+
+          <div class="field">
+            <label for="prenoms"
+              >Prénoms <span class="opt">(facultatif)</span></label
+            >
+            <input type="text" id="prenoms" name="prenoms" autocomplete="off" />
+          </div>
+
+          <div class="field">
+            <label for="noms">Nom(s)<span class="req">*</span></label>
+            <input
+              type="text"
+              id="noms"
+              name="noms"
+              required
+              autocomplete="off"
+            />
+            <div class="error-msg">Ce champ est obligatoire.</div>
+          </div>
+
+          <div class="field">
+            <label for="sexe">Sexe<span class="req">*</span></label>
+            <select id="sexe" name="sexe" required>
+              <option value="" disabled selected>Choisir…</option>
+              <option value="Masculin">Masculin</option>
+              <option value="Féminin">Féminin</option>
+            </select>
+            <div class="error-msg">Merci de faire un choix.</div>
+          </div>
+
+          <div class="field">
+            <label for="etat_civil">État civil<span class="req">*</span></label>
+            <select id="etat_civil" name="etat_civil" required>
+              <option value="" disabled selected>Choisir…</option>
+              <option value="Célibataire">Célibataire</option>
+              <option value="Marié(e)">Marié(e)</option>
+            </select>
+            <div class="error-msg">Merci de faire un choix.</div>
+          </div>
+
+          <div class="field">
+            <label for="taille"
+              >Taille en mètre (m)<span class="req">*</span></label
+            >
+            <input
+              type="number"
+              id="taille"
+              name="taille"
+              step="0.01"
+              min="0"
+              placeholder="Ex : 1.72"
+              required
+            />
+            <div class="error-msg">Ce champ est obligatoire.</div>
+          </div>
+
+          <div class="field">
+            <label for="teint">Teint<span class="req">*</span></label>
+            <input
+              type="text"
+              id="teint"
+              name="teint"
+              placeholder="Ex : Noir, Clair, Métis…"
+              required
+              autocomplete="off"
+            />
+            <div class="error-msg">Ce champ est obligatoire.</div>
+          </div>
+
+          <div class="field">
+            <label for="signes"
+              >Signes particuliers<span class="req">*</span></label
+            >
+            <textarea
+              id="signes"
+              name="signes"
+              placeholder="Ex : cicatrice au bras gauche, aucun signe particulier…"
+              required
+            ></textarea>
+            <div class="error-msg">Ce champ est obligatoire.</div>
+          </div>
+
+          <div class="field">
+            <label for="ethnie">Ethnie<span class="req">*</span></label>
+            <input
+              type="text"
+              id="ethnie"
+              name="ethnie"
+              placeholder="Ex : BAMILEKE, BASSA…"
+              required
+              autocomplete="off"
+            />
+            <div class="error-msg">Ce champ est obligatoire.</div>
+          </div>
+
+          <div class="field">
+            <label for="date_naissance"
+              >Date de naissance<span class="req">*</span></label
+            >
+            <input
+              type="date"
+              id="date_naissance"
+              name="date_naissance"
+              required
+            />
+            <div class="error-msg">Ce champ est obligatoire.</div>
+          </div>
+
+          <div class="field">
+            <label for="region_naissance"
+              >Région de naissance<span class="req">*</span></label
+            >
+            <input
+              type="text"
+              id="region_naissance"
+              name="region_naissance"
+              placeholder="Ex : Ouest"
+              required
+              autocomplete="off"
+            />
+            <div class="error-msg">Ce champ est obligatoire.</div>
+          </div>
+
+          <div class="field">
+            <label for="departement_naissance"
+              >Département de naissance<span class="req">*</span></label
+            >
+            <input
+              type="text"
+              id="departement_naissance"
+              name="departement_naissance"
+              placeholder="Ex : Menoua"
+              required
+              autocomplete="off"
+            />
+            <div class="error-msg">Ce champ est obligatoire.</div>
+          </div>
+
+          <div class="field">
+            <label for="localite_naissance"
+              >Localité de naissance<span class="req">*</span></label
+            >
+            <input
+              type="text"
+              id="localite_naissance"
+              name="localite_naissance"
+              placeholder="Ex : Dschang"
+              required
+              autocomplete="off"
+            />
+            <div class="error-msg">Ce champ est obligatoire.</div>
+          </div>
+
+          <div class="field">
+            <label for="profession">Profession<span class="req">*</span></label>
+            <input
+              type="text"
+              id="profession"
+              name="profession"
+              placeholder="Ex : Élève, si vous venez d'avoir le BAC"
+              required
+              autocomplete="off"
+            />
+            <div class="error-msg">Ce champ est obligatoire.</div>
+          </div>
+        </section>
+
+        <!-- ================= INFORMATIONS SUR LES PARENTS ================= -->
+        <section class="card">
+          <div class="section-head">
+            <span class="icon">👪</span>
+            <h2>Informations sur les parents</h2>
+          </div>
+          <div class="section-rule"></div>
+
+          <div class="field">
+            <label for="mere_prenoms"
+              >Prénoms de la mère <span class="opt">(facultatif)</span></label
+            >
+            <input
+              type="text"
+              id="mere_prenoms"
+              name="mere_prenoms"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="field">
+            <label for="mere_noms"
+              >Nom(s) de la mère<span class="req">*</span></label
+            >
+            <input
+              type="text"
+              id="mere_noms"
+              name="mere_noms"
+              required
+              autocomplete="off"
+            />
+            <div class="error-msg">Ce champ est obligatoire.</div>
+          </div>
+
+          <div class="field">
+            <label for="mere_date_naissance"
+              >Date de naissance de la mère<span class="req">*</span></label
+            >
+            <input
+              type="date"
+              id="mere_date_naissance"
+              name="mere_date_naissance"
+              required
+            />
+            <div class="error-msg">Ce champ est obligatoire.</div>
+          </div>
+
+          <div class="divider-note">
+            Les informations du père ci-dessous sont facultatives.
+          </div>
+
+          <div class="field">
+            <label for="pere_prenoms"
+              >Prénoms du père <span class="opt">(facultatif)</span></label
+            >
+            <input
+              type="text"
+              id="pere_prenoms"
+              name="pere_prenoms"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="field">
+            <label for="pere_noms"
+              >Nom(s) du père <span class="opt">(facultatif)</span></label
+            >
+            <input
+              type="text"
+              id="pere_noms"
+              name="pere_noms"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="field">
+            <label for="pere_date_naissance"
+              >Date de naissance du père
+              <span class="opt">(facultatif)</span></label
+            >
+            <input
+              type="date"
+              id="pere_date_naissance"
+              name="pere_date_naissance"
+            />
+          </div>
+        </section>
+
+        <!-- ================= MOINS DE 18 ANS ================= -->
+        <section class="card">
+          <div class="section-head">
+            <span class="icon">🧒</span>
+            <h2>Cas des moins de 18 ans</h2>
+          </div>
+          <div class="section-rule"></div>
+
+          <div class="field">
+            <label for="moins18"
+              >Avez-vous moins de 18 ans sur l'acte de naissance ?<span
+                class="req"
+                >*</span
+              ></label
+            >
+            <select id="moins18" name="moins18" required>
+              <option value="" disabled selected>Choisir…</option>
+              <option value="Oui">Oui</option>
+              <option value="Non">Non</option>
+            </select>
+            <div class="error-msg">Merci de faire un choix.</div>
+          </div>
+
+          <div id="minor-section">
+            <div class="divider-note">Informations du représentant légal :</div>
+
+            <div class="field">
+              <label for="rep_annee_cni"
+                >En quelle année le représentant a-t-il fait sa CNI ?<span
+                  class="req"
+                  >*</span
+                ></label
+              >
+              <input
+                type="number"
+                id="rep_annee_cni"
+                name="rep_annee_cni"
+                placeholder="Ex : 2015"
+                min="1960"
+                max="2100"
+              />
+              <div class="error-msg">Ce champ est obligatoire.</div>
+            </div>
+
+            <div class="field">
+              <label for="rep_numero_cni"
+                >Numéro de la CNI du représentant<span class="req"
+                  >*</span
+                ></label
+              >
+              <input
+                type="text"
+                id="rep_numero_cni"
+                name="rep_numero_cni"
+                autocomplete="off"
+              />
+              <div class="error-msg">Ce champ est obligatoire.</div>
+            </div>
+
+            <div class="field">
+              <label for="rep_prenoms"
+                >Prénoms du représentant<span class="req">*</span></label
+              >
+              <input
+                type="text"
+                id="rep_prenoms"
+                name="rep_prenoms"
+                autocomplete="off"
+              />
+              <div class="error-msg">Ce champ est obligatoire.</div>
+            </div>
+
+            <div class="field">
+              <label for="rep_noms"
+                >Nom(s) du représentant<span class="req">*</span></label
+              >
+              <input
+                type="text"
+                id="rep_noms"
+                name="rep_noms"
+                autocomplete="off"
+              />
+              <div class="error-msg">Ce champ est obligatoire.</div>
+            </div>
+
+            <div class="field">
+              <label for="rep_sexe"
+                >Sexe du représentant<span class="req">*</span></label
+              >
+              <select id="rep_sexe" name="rep_sexe">
+                <option value="" disabled selected>Choisir…</option>
+                <option value="Masculin">Masculin</option>
+                <option value="Féminin">Féminin</option>
+              </select>
+              <div class="error-msg">Merci de faire un choix.</div>
+            </div>
+
+            <div class="field">
+              <label for="rep_date_naissance"
+                >Date de naissance du représentant<span class="req"
+                  >*</span
+                ></label
+              >
+              <input
+                type="date"
+                id="rep_date_naissance"
+                name="rep_date_naissance"
+              />
+              <div class="error-msg">Ce champ est obligatoire.</div>
+            </div>
+
+            <div class="field">
+              <label for="rep_pays_naissance"
+                >Pays de naissance du représentant<span class="req"
+                  >*</span
+                ></label
+              >
+              <input
+                type="text"
+                id="rep_pays_naissance"
+                name="rep_pays_naissance"
+                autocomplete="off"
+              />
+              <div class="error-msg">Ce champ est obligatoire.</div>
+            </div>
+
+            <div class="field">
+              <label for="rep_region_naissance"
+                >Région de naissance du représentant<span class="req"
+                  >*</span
+                ></label
+              >
+              <input
+                type="text"
+                id="rep_region_naissance"
+                name="rep_region_naissance"
+                placeholder="Ex : Ouest"
+                autocomplete="off"
+              />
+              <div class="error-msg">Ce champ est obligatoire.</div>
+            </div>
+
+            <div class="field">
+              <label for="rep_departement_naissance"
+                >Département de naissance du représentant<span class="req"
+                  >*</span
+                ></label
+              >
+              <input
+                type="text"
+                id="rep_departement_naissance"
+                name="rep_departement_naissance"
+                placeholder="Ex : Menoua"
+                autocomplete="off"
+              />
+              <div class="error-msg">Ce champ est obligatoire.</div>
+            </div>
+
+            <div class="field">
+              <label for="rep_localite_naissance"
+                >Localité de naissance du représentant<span class="req"
+                  >*</span
+                ></label
+              >
+              <input
+                type="text"
+                id="rep_localite_naissance"
+                name="rep_localite_naissance"
+                placeholder="Ex : Dschang"
+                autocomplete="off"
+              />
+              <div class="error-msg">Ce champ est obligatoire.</div>
+            </div>
+
+            <div class="field">
+              <label for="rep_pays_residence"
+                >Pays de résidence du représentant<span class="req"
+                  >*</span
+                ></label
+              >
+              <input
+                type="text"
+                id="rep_pays_residence"
+                name="rep_pays_residence"
+                autocomplete="off"
+              />
+              <div class="error-msg">Ce champ est obligatoire.</div>
+            </div>
+
+            <div class="field">
+              <label for="rep_date_delivrance_cni"
+                >Date de délivrance de la CNI du représentant<span class="req"
+                  >*</span
+                ></label
+              >
+              <input
+                type="date"
+                id="rep_date_delivrance_cni"
+                name="rep_date_delivrance_cni"
+              />
+              <div class="error-msg">Ce champ est obligatoire.</div>
+            </div>
+
+            <div class="field">
+              <label for="rep_date_expiration_cni"
+                >Date d'expiration de la CNI du représentant<span class="req"
+                  >*</span
+                ></label
+              >
+              <input
+                type="date"
+                id="rep_date_expiration_cni"
+                name="rep_date_expiration_cni"
+              />
+              <div class="error-msg">Ce champ est obligatoire.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= ENVOI ================= -->
+        <div class="send-wrap">
+          <p class="hint">
+            En cliquant, vos réponses seront copiées et envoyées directement sur
+            WhatsApp.
+          </p>
+          <button type="submit" class="send-btn" id="send-btn">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 20l1.6-4.8A8 8 0 1112 20a7.9 7.9 0 01-4-1.1L3 20z"
+                stroke="white"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M8.5 9.5c.3 2.4 2.6 4.7 5 5 .8.1 1.4-.5 1.4-1.2v-.4c0-.3-.2-.6-.5-.7l-1.4-.5c-.3-.1-.6 0-.8.2l-.3.4c-1-.5-1.8-1.3-2.3-2.3l.4-.3c.2-.2.3-.5.2-.8l-.5-1.4c-.1-.3-.4-.5-.7-.5h-.4c-.7 0-1.3.6-1.2 1.4z"
+                fill="white"
+              />
+            </svg>
+            Envoyer à Mr Bray
+          </button>
+        </div>
+
+        <div class="autosave-note">
+          💾 Vos réponses sont enregistrées automatiquement sur cet appareil
+        </div>
+      </form>
+
+      <footer class="small">
+        Vos données restent sur votre appareil tant que vous n'avez pas cliqué
+        sur le bouton d'envoi.
+      </footer>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      (function () {
+        const form = document.getElementById("cni-form");
+        const moins18 = document.getElementById("moins18");
+        const minorSection = document.getElementById("minor-section");
+        const minorInputs = minorSection.querySelectorAll("input, select");
+        const STORAGE_PREFIX = "cni_form_";
+        const progressFill = document.getElementById("progress-fill");
+        const progressPct = document.getElementById("progress-pct");
+
+        // ---------- Champs & libellés (pour le message WhatsApp + messages d'erreur) ----------
+        const personalFields = [
+          ["prenoms", "Prénoms"],
+          ["noms", "Nom(s)"],
+          ["sexe", "Sexe"],
+          ["etat_civil", "État civil"],
+          ["taille", "Taille en mètre (m)"],
+          ["teint", "Teint"],
+          ["signes", "Signes particuliers"],
+          ["ethnie", "Ethnie"],
+          ["date_naissance", "Date de naissance"],
+          ["region_naissance", "Région de naissance"],
+          ["departement_naissance", "Département de naissance"],
+          ["localite_naissance", "Localité de naissance"],
+          ["profession", "Profession"],
+        ];
+
+        const parentsFields = [
+          ["mere_prenoms", "Prénoms de la mère"],
+          ["mere_noms", "Nom(s) de la mère"],
+          ["mere_date_naissance", "Date de naissance de la mère"],
+          ["pere_prenoms", "Prénoms du père"],
+          ["pere_noms", "Nom(s) du père"],
+          ["pere_date_naissance", "Date de naissance du père"],
+        ];
+
+        const minorFields = [
+          ["rep_annee_cni", "Année de la CNI du représentant"],
+          ["rep_numero_cni", "Numéro de la CNI du représentant"],
+          ["rep_prenoms", "Prénoms du représentant"],
+          ["rep_noms", "Nom(s) du représentant"],
+          ["rep_sexe", "Sexe du représentant"],
+          ["rep_date_naissance", "Date de naissance du représentant"],
+          ["rep_pays_naissance", "Pays de naissance du représentant"],
+          ["rep_region_naissance", "Région de naissance du représentant"],
+          [
+            "rep_departement_naissance",
+            "Département de naissance du représentant",
+          ],
+          ["rep_localite_naissance", "Localité de naissance du représentant"],
+          ["rep_pays_residence", "Pays de résidence du représentant"],
+          [
+            "rep_date_delivrance_cni",
+            "Date de délivrance de la CNI du représentant",
+          ],
+          [
+            "rep_date_expiration_cni",
+            "Date d'expiration de la CNI du représentant",
+          ],
+        ];
+
+        const labelLookup = {};
+        [
+          ...personalFields,
+          ...parentsFields,
+          ["moins18", "Avez-vous moins de 18 ans sur l'acte de naissance ?"],
+          ...minorFields,
+        ].forEach(([id, label]) => {
+          labelLookup[id] = label;
+        });
+
+        // ---------- Affichage conditionnel "moins de 18 ans" ----------
+        function toggleMinorSection() {
+          if (moins18.value === "Oui") {
+            minorSection.style.display = "block";
+            minorInputs.forEach((el) => (el.required = true));
+          } else {
+            minorSection.style.display = "none";
+            minorInputs.forEach((el) => {
+              el.required = false;
+              clearError(el);
+            });
+          }
+          updateProgress();
+        }
+        moins18.addEventListener("change", toggleMinorSection);
+
+        // ---------- Sauvegarde automatique (localStorage) ----------
+        const allFields = form.querySelectorAll("input, select, textarea");
+
+        allFields.forEach((el) => {
+          const saved = localStorage.getItem(STORAGE_PREFIX + el.id);
+          if (saved !== null) {
+            el.value = saved;
+          }
+          el.addEventListener("input", () => {
+            localStorage.setItem(STORAGE_PREFIX + el.id, el.value);
+            clearError(el);
+            updateProgress();
+          });
+          el.addEventListener("change", () => {
+            localStorage.setItem(STORAGE_PREFIX + el.id, el.value);
+            clearError(el);
+            updateProgress();
+          });
+        });
+
+        toggleMinorSection(); // applique l'état correct après restauration
+
+        // ---------- Barre de progression ----------
+        function updateProgress() {
+          const requiredEls = Array.from(
+            form.querySelectorAll("[required]"),
+          ).filter((el) => el.offsetParent !== null); // uniquement les champs visibles
+          if (requiredEls.length === 0) {
+            progressFill.style.width = "0%";
+            progressPct.textContent = "0%";
+            return;
+          }
+          const filled = requiredEls.filter(
+            (el) => el.value && el.value.trim() !== "",
+          ).length;
+          const pct = Math.round((filled / requiredEls.length) * 100);
+          progressFill.style.width = pct + "%";
+          progressPct.textContent = pct + "%";
+        }
+        updateProgress();
+
+        // ---------- Gestion des erreurs de champ ----------
+        function clearError(el) {
+          const wrap = el.closest(".field");
+          if (wrap) wrap.classList.remove("has-error");
+        }
+
+        function showError(el) {
+          const wrap = el.closest(".field");
+          if (wrap) wrap.classList.add("has-error");
+        }
+
+        function highlightAndFocus(el) {
+          showError(el);
+          el.classList.add("shake");
+          setTimeout(() => el.classList.remove("shake"), 500);
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+          setTimeout(() => el.focus({ preventScroll: true }), 350);
+          showToast(
+            "⚠️ Merci de renseigner : " + (labelLookup[el.id] || "ce champ"),
+          );
+        }
+
+        // ---------- Toast ----------
+        const toast = document.getElementById("toast");
+        let toastTimer;
+        function showToast(msg, duration) {
+          clearTimeout(toastTimer);
+          toast.textContent = msg;
+          toast.classList.add("show");
+          toastTimer = setTimeout(
+            () => toast.classList.remove("show"),
+            duration || 3000,
+          );
+        }
+
+        // ---------- Construction du message ----------
+        function fieldValue(id) {
+          const el = document.getElementById(id);
+          return (el && el.value ? el.value : "").toUpperCase();
+        }
+
+        function buildMessage() {
+          const lines = [];
+          lines.push("*Données personnelles*");
+          personalFields.forEach(([id, label]) => {
+            lines.push(label + ": " + fieldValue(id));
+          });
+
+          lines.push("");
+          lines.push("*Informations sur les parents*");
+          parentsFields.forEach(([id, label]) => {
+            lines.push(label + ": " + fieldValue(id));
+          });
+
+          lines.push("");
+          lines.push(labelLookup["moins18"] + ": " + fieldValue("moins18"));
+
+          if (moins18.value === "Oui") {
+            lines.push("");
+            lines.push("*Informations du représentant*");
+            minorFields.forEach(([id, label]) => {
+              lines.push(label + ": " + fieldValue(id));
+            });
+          }
+
+          return lines.join("\n");
+        }
+
+        function copyToClipboard(text) {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            return navigator.clipboard.writeText(text);
+          }
+          return new Promise((resolve, reject) => {
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            ta.style.position = "fixed";
+            ta.style.left = "-9999px";
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            try {
+              document.execCommand("copy");
+              resolve();
+            } catch (err) {
+              reject(err);
+            } finally {
+              document.body.removeChild(ta);
+            }
+          });
+        }
+
+        // ---------- Validation + envoi ----------
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // on ne vérifie que les champs obligatoires actuellement visibles
+          const requiredEls = Array.from(
+            form.querySelectorAll("[required]"),
+          ).filter((el) => el.offsetParent !== null);
+
+          const firstInvalid = requiredEls.find(
+            (el) => !el.value || el.value.trim() === "",
+          );
+
+          if (firstInvalid) {
+            highlightAndFocus(firstInvalid);
+            return;
+          }
+
+          const message = buildMessage();
+          const phone = "237687021125";
+          const url =
+            "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
+
+          // IMPORTANT : window.open doit être appelé de façon synchrone, dans le même
+          // tick que le clic, sinon le navigateur bloque la fenêtre comme un pop-up.
+          const whatsappWindow = window.open(url, "_blank");
+          if (!whatsappWindow) {
+            // Si le pop-up a quand même été bloqué, on redirige la page elle-même
+            // vers le lien WhatsApp (fonctionne toujours, y compris sur mobile).
+            window.location.href = url;
+          }
+
+          // La copie presse-papier se fait en parallèle, sans retarder l'ouverture.
+          copyToClipboard(message)
+            .then(() =>
+              showToast("✅ Informations copiées et WhatsApp ouvert !"),
+            )
+            .catch(() =>
+              showToast(
+                "WhatsApp ouvert (copie du presse-papier indisponible).",
+              ),
+            );
+        });
+      })();
+    </script>
+  </body>
+</html>
